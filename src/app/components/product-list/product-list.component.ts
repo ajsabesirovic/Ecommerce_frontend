@@ -9,7 +9,6 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  currentCategoryName: string = '';
   products: Product[] = [];
   currentCategoryId: number = 1;
   searchMode: boolean = false;
@@ -40,10 +39,8 @@ export class ProductListComponent implements OnInit {
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
     if (hasCategoryId) {
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
-      this.currentCategoryName = this.route.snapshot.paramMap.get('name')!;
     } else {
       this.currentCategoryId = 1;
-      this.currentCategoryName = 'Books';
     }
     this.productService
       .getProductList(this.currentCategoryId)
