@@ -2,6 +2,7 @@
   <input
     #myInput
     type="text"
+    [(ngModel)]="searchKeyword"
     placeholder="Search for data ..."
     class="au-input au-input-xl"
     (keyup.enter)="doSearch(myInput.value)"

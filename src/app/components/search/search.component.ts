@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -7,12 +7,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  constructor(private router: Router) {}
+  searchKeyword: string = '';
 
-  ngOnInit(): void {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      const keyword = params.get('keyword');
+      if (keyword) {
+        this.searchKeyword = keyword;
+      }
+    });
+  }
   doSearch(value: string) {
-    console.log(value);
+    this.searchKeyword = value;
     this.router.navigateByUrl(`/search/${value}`);
   }
 }
