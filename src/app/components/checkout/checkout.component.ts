@@ -51,17 +51,15 @@ export class CheckoutComponent implements OnInit {
     });
 
     const startMonth: number = new Date().getMonth() + 1;
-    console.log(startMonth, ' = startmonth');
+    console.log(startMonth, ' = startmonth from ngoninit');
 
     this.luv2shopFormService
       .getCreditCardMonths(startMonth)
       .subscribe((data) => {
-        console.log(JSON.stringify(data));
         this.creditCardMonths = data;
       });
 
     this.luv2shopFormService.getCreditCardYears().subscribe((data) => {
-      console.log(JSON.stringify(data));
       this.creditCardYears = data;
     });
   }
@@ -79,5 +77,23 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.checkoutFormGroup.controls['billingAdress'].reset();
     }
+  }
+  handleMonthsAndYears() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+    const currentYear: number = new Date().getFullYear();
+    const selectedYear: number = Number(
+      creditCardFormGroup?.value.expirationYear
+    );
+    let startMonth: number;
+    if (currentYear == selectedYear) {
+      startMonth = new Date().getMonth() + 1;
+    } else {
+      startMonth = 1;
+    }
+    this.luv2shopFormService
+      .getCreditCardMonths(startMonth)
+      .subscribe((data) => {
+        this.creditCardMonths = data;
+      });
   }
 }
