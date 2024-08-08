@@ -8,6 +8,7 @@ import {
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { Luv2ShopFormService } from 'src/app/services/luv2-shop-form.service';
+import { Luv2ShopValidators } from 'src/app/Validators/luv2-shop-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -32,12 +33,14 @@ export class CheckoutComponent implements OnInit {
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('', [
+          Validators.minLength(4),
           Validators.required,
-          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
         ]),
         lastName: new FormControl('', [
           Validators.required,
           Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhitespace,
         ]),
         email: new FormControl('', [
           Validators.required,
@@ -45,11 +48,23 @@ export class CheckoutComponent implements OnInit {
         ]),
       }),
       shippingAddress: this.formBuilder.group({
-        street: [''],
-        city: [''],
-        state: [''],
-        country: [''],
-        zipCode: [''],
+        street: new FormControl('', [
+          Validators.minLength(4),
+          Validators.required,
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
+        city: new FormControl('', [
+          Validators.required,
+          Validators.minLength(4),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
+        state: new FormControl('', [Validators.required]),
+        country: new FormControl('', [Validators.required]),
+        zipCode: new FormControl('', [
+          Validators.required,
+          Validators.minLength(4),
+          Luv2ShopValidators.notOnlyWhitespace,
+        ]),
       }),
       billingAddress: this.formBuilder.group({
         street: [''],
@@ -95,6 +110,22 @@ export class CheckoutComponent implements OnInit {
   }
   get email() {
     return this.checkoutFormGroup.get('customer.email');
+  }
+
+  get shippingStreet() {
+    return this.checkoutFormGroup.get('shippingAddress.street');
+  }
+  get shippingZipCode() {
+    return this.checkoutFormGroup.get('shippingAddress.zipCode');
+  }
+  get shippingCountry() {
+    return this.checkoutFormGroup.get('shippingAddress.country');
+  }
+  get shippingState() {
+    return this.checkoutFormGroup.get('shippingAddress.state');
+  }
+  get shippingCity() {
+    return this.checkoutFormGroup.get('shippingAddress.city');
   }
 
   onSubmit() {
